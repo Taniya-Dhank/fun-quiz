@@ -13,11 +13,7 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background:
-    url("https://i.imgur.com/9YQZ7Zy.png"),
-    linear-gradient(135deg, #fbc2eb, #a6c1ee);
-  background-size: 120px, cover;
-  background-repeat: repeat, no-repeat;
+  background: linear-gradient(135deg, #fce4ec, #e0f7fa); /* light gradient background */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -163,30 +159,12 @@ footer {
 
 <script>
 const questions = [
-  {
-    q: "🌙 What’s your usual mood at 2 AM?",
-    a: ["🤓 Productive genius", "🤯 Overthinking everything", "📱 Scrolling reels", "😵 Why am I awake?"]
-  },
-  {
-    q: "🎉 Best plan for a free day?",
-    a: ["🚶 Go out randomly", "😴 Sleep like a legend", "📋 Plan then cancel", "🤷 Depends on mood"]
-  },
-  {
-    q: "🔋 Phone battery at 10% means?",
-    a: ["😱 Panic mode", "🔌 Power saver ON", "📱 Still scrolling", "🙃 Charger? never heard"]
-  },
-  {
-    q: "🗣️ When someone says ‘be honest’…",
-    a: ["😇 I become honest", "🙂 Lie politely", "😬 Overshare", "🏃 Change topic"]
-  },
-  {
-    q: "🧠 What describes you best?",
-    a: ["🌀 Organized chaos", "😌 Calm outside, mess inside", "😮‍💨 Low effort, high stress", "🤔 Still figuring out"]
-  },
-  {
-    q: "⚡ Reaction to sudden plans?",
-    a: ["🔥 Let’s go!", "⏰ Give me 1 hour", "🧠 Mentally yes, physically no", "👀 Seen-zoned"]
-  }
+  { q: "🌙 What’s your usual mood at 2 AM?", a: ["🤓 Productive genius", "🤯 Overthinking everything", "📱 Scrolling reels", "😵 Why am I awake?"] },
+  { q: "🎉 Best plan for a free day?", a: ["🚶 Go out randomly", "😴 Sleep like a legend", "📋 Plan then cancel", "🤷 Depends on mood"] },
+  { q: "🔋 Phone battery at 10% means?", a: ["😱 Panic mode", "🔌 Power saver ON", "📱 Still scrolling", "🙃 Charger? never heard"] },
+  { q: "🗣️ When someone says ‘be honest’…", a: ["😇 I become honest", "🙂 Lie politely", "😬 Overshare", "🏃 Change topic"] },
+  { q: "🧠 What describes you best?", a: ["🌀 Organized chaos", "😌 Calm outside, mess inside", "😮‍💨 Low effort, high stress", "🤔 Still figuring out"] },
+  { q: "⚡ Reaction to sudden plans?", a: ["🔥 Let’s go!", "⏰ Give me 1 hour", "🧠 Mentally yes, physically no", "👀 Seen-zoned"] }
 ];
 
 const endings = [
@@ -210,13 +188,11 @@ function launchConfetti() {
     confetti.classList.add("confetti");
 
     const colors = ["#ff6a88", "#ffcc70", "#a1c4fd", "#c2e9fb", "#fbc2eb"];
-    confetti.style.backgroundColor =
-      colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
     confetti.style.left = Math.random() * 100 + "vw";
     confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
-    confetti.style.width =
-      confetti.style.height = (Math.random() * 8 + 6) + "px";
+    confetti.style.width = confetti.style.height = (Math.random() * 8 + 6) + "px";
 
     document.body.appendChild(confetti);
     setTimeout(() => confetti.remove(), 3000);
@@ -249,11 +225,9 @@ function next() {
 
 function finishQuiz() {
   progressEl.style.width = "100%";
-  questionEl.textContent =
-    endings[Math.floor(Math.random() * endings.length)];
+  questionEl.textContent = endings[Math.floor(Math.random() * endings.length)];
   countEl.textContent = "Completed 🎉";
-  optionsEl.innerHTML =
-    `<button onclick="location.reload()">🔄 Play again</button>`;
+  optionsEl.innerHTML = `<button onclick="location.reload()">🔄 Play again</button>`;
   launchConfetti();
 }
 
