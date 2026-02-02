@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fun Friend Quiz 😄</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background:
+    url("https://i.imgur.com/9YQZ7Zy.png"),
+    linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  background-size: 120px, cover;
+  background-repeat: repeat, no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVBAR */
+nav {
+  background: linear-gradient(90deg, #ff6a88, #ff99ac);
+  padding: 14px 20px;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* MAIN */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.quiz-card {
+  background: white;
+  border-radius: 25px;
+  padding: 28px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.progress {
+  height: 8px;
+  background: #fde2e4;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff6a88, #ffcc70);
+  transition: width 0.4s ease;
+}
+
+.question-count {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.question {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1f2937;
+}
+
+.options button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: none;
+  border-radius: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+  transition: all 0.25s ease;
+}
+
+.options button:nth-child(2) {
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+}
+.options button:nth-child(3) {
+  background: linear-gradient(135deg, #fdcbf1, #e6dee9);
+}
+.options button:nth-child(4) {
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+}
+
+.options button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* FOOTER */
+footer {
+  background: #111827;
+  color: #d1d5db;
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+}
+
+/* CONFETTI */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: fall linear forwards;
+  z-index: 9999;
+  opacity: 0.9;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>😄 Fun Friend Quiz</nav>
+
+<main>
+  <div class="quiz-card">
+    <div class="progress">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <div class="question-count" id="count"></div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+  </div>
+</main>
+
+<footer>
+  No scores • No judgement • Just vibes 😌
+</footer>
+
+<script>
+const questions = [
+  {
+    q: "🌙 What’s your usual mood at 2 AM?",
+    a: ["🤓 Productive genius", "🤯 Overthinking everything", "📱 Scrolling reels", "😵 Why am I awake?"]
+  },
+  {
+    q: "🎉 Best plan for a free day?",
+    a: ["🚶 Go out randomly", "😴 Sleep like a legend", "📋 Plan then cancel", "🤷 Depends on mood"]
+  },
+  {
+    q: "🔋 Phone battery at 10% means?",
+    a: ["😱 Panic mode", "🔌 Power saver ON", "📱 Still scrolling", "🙃 Charger? never heard"]
+  },
+  {
+    q: "🗣️ When someone says ‘be honest’…",
+    a: ["😇 I become honest", "🙂 Lie politely", "😬 Overshare", "🏃 Change topic"]
+  },
+  {
+    q: "🧠 What describes you best?",
+    a: ["🌀 Organized chaos", "😌 Calm outside, mess inside", "😮‍💨 Low effort, high stress", "🤔 Still figuring out"]
+  },
+  {
+    q: "⚡ Reaction to sudden plans?",
+    a: ["🔥 Let’s go!", "⏰ Give me 1 hour", "🧠 Mentally yes, physically no", "👀 Seen-zoned"]
+  }
+];
+
+const endings = [
+  "🎉 Certified charmboy  Mr.cb😄",
+  "🧪  Philosophical ,intellectual Mr .CB",
+  "😂 Deserve 10 Gf and 4 wife but still choose to remain single ",
+  "🤷 Conclusion still loading   charmboy…",
+  "😌 That’s it. Go hydrate  Mr .CB💧"
+];
+
+let index = 0;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const countEl = document.getElementById("count");
+const progressEl = document.getElementById("progress");
+
+function launchConfetti() {
+  for (let i = 0; i < 60; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+
+    const colors = ["#ff6a88", "#ffcc70", "#a1c4fd", "#c2e9fb", "#fbc2eb"];
+    confetti.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
+    confetti.style.width =
+      confetti.style.height = (Math.random() * 8 + 6) + "px";
+
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 3000);
+  }
+}
+
+function loadQuestion() {
+  if (index < questions.length) {
+    const current = questions[index];
+    questionEl.textContent = current.q;
+    countEl.textContent = `Question ${index + 1} of ${questions.length}`;
+    progressEl.style.width = `${(index / questions.length) * 100}%`;
+
+    optionsEl.innerHTML = "";
+    current.a.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.onclick = next;
+      optionsEl.appendChild(btn);
+    });
+  } else {
+    finishQuiz();
+  }
+}
+
+function next() {
+  index++;
+  loadQuestion();
+}
+
+function finishQuiz() {
+  progressEl.style.width = "100%";
+  questionEl.textContent =
+    endings[Math.floor(Math.random() * endings.length)];
+  countEl.textContent = "Completed 🎉";
+  optionsEl.innerHTML =
+    `<button onclick="location.reload()">🔄 Play again</button>`;
+  launchConfetti();
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
